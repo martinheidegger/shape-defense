@@ -7,9 +7,11 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shape_defence/components/big_enemy_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/player_component.dart';
+import 'package:shape_defence/components/small_enemy_component.dart';
 import 'package:shape_defence/scenarios/game_over_component.dart';
 
 class ShapeDefenceGame extends FlameGame
@@ -46,6 +48,7 @@ class ShapeDefenceGame extends FlameGame
       Flame.images.load("images/Shield/E.png"),
       Flame.images.load("images/Shield/F.png"),
       Flame.images.load("images/Enemy/Small.png"),
+      Flame.images.load("images/Enemy/Big.png"),
     ]);
     scoreBoard = TextComponent(
       text: 'score: $score',
@@ -125,7 +128,8 @@ class ShapeDefenceGame extends FlameGame
 
   addEnemy()
   {
-    final enemy = EnemyComponent(speed: 100.0, player: playerComponent);
+    final type = random.nextInt(2);
+    EnemyComponent enemy = type == 0 ? SmallEnemyComponent(player: playerComponent) : BigEnemyComponent(player: playerComponent);
     enemy.position = _getRandomEdgePosition();
     add(enemy);
   }

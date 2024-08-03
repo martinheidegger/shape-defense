@@ -1,17 +1,14 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
 import 'package:shape_defence/components/player_component.dart';
 
-class EnemyComponent extends SpriteComponent with CollisionCallbacks {
+abstract class EnemyComponent extends PositionComponent with CollisionCallbacks {
   final double speed;
   final BlueDropComponent player;
+  final double health;
 
-  EnemyComponent({ this.speed = 100.0, required this.player }) : super(
-    sprite: Sprite(Flame.images.fromCache('images/Enemy/Small.png').clone()),
-    anchor: Anchor.center
-  ) {
-    add(RectangleHitbox(size: size, anchor: Anchor.center));
+  EnemyComponent({ this.speed = 100.0, this.health = 10, required this.player }) : super() {
+    debugMode = true;
   }
 
   @override
@@ -36,16 +33,13 @@ class EnemyComponent extends SpriteComponent with CollisionCallbacks {
   }
 
   @override
-  bool debugMode = true;
-
-  @override
   void onCollisionStart(
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other == player) {
-      player.reduceHealth(5);
+      player.reduceHealth(health);
       removeFromParent();
     }
   }
