@@ -186,7 +186,9 @@ class ShapeDefenceGame extends FlameGame
             ),
           ),
         );
+        add(cheeringBoard);
       } else if(score == 15) {
+        remove(cheeringBoard);
         cheeringBoard = TextComponent(
           text: 'RAMPAGE!!!!!',
           position: Vector2(size.x / 2, 0),
@@ -198,7 +200,9 @@ class ShapeDefenceGame extends FlameGame
             ),
           ),
         );
+        add(cheeringBoard);
       } else if(score == 20) {
+        remove(cheeringBoard);
         cheeringBoard = TextComponent(
           text: 'HUMILIATION!!!!!',
           position: Vector2(size.x / 2, 0),
@@ -210,7 +214,7 @@ class ShapeDefenceGame extends FlameGame
             ),
           ),
         );
-        add(scoreBoard);
+        add(cheeringBoard);
       }
     }
     add(scoreBoard);

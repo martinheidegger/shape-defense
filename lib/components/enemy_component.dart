@@ -45,7 +45,7 @@ class EnemyComponent extends SpriteComponent with CollisionCallbacks {
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other == player) {
-      player.reduceHealth(50);
+      player.reduceHealth(5);
       removeFromParent();
     }
   }

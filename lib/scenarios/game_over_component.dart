@@ -53,17 +53,7 @@ class GameOverComponent extends PositionComponent with HasGameRef {
       position: Vector2(size.x / 4, size.y - 80),
     );
 
-    // Exit Button
-    final exitButton = ButtonComponent(
-      text: 'Exit',
-      onPressed: onExit,
-      size: Vector2(200, 80),
-      color: GameColors.enemy,
-      position: Vector2(3 * size.x / 4, size.y - 80),
-    );
-
     add(retryButton);
-    add(exitButton);
   }
 }
 
