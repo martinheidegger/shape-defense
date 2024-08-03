@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
@@ -18,6 +19,7 @@ class ShapeDefenceGame extends FlameGame
 
   late StreamSubscription bulletTimeSub;
   late StreamSubscription enemyTimeSub;
+  late Random random;
 
   @override
   Color backgroundColor() {
@@ -26,6 +28,7 @@ class ShapeDefenceGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
+    random = Random(0);
     Flame.images.prefix = "";
     await Future.wait([
       Flame.images.load("images/Hero/Full.png"),
@@ -36,7 +39,8 @@ class ShapeDefenceGame extends FlameGame
       Flame.images.load("images/Shield/C.png"),
       Flame.images.load("images/Shield/D.png"),
       Flame.images.load("images/Shield/E.png"),
-      Flame.images.load("images/Shield/F.png")
+      Flame.images.load("images/Shield/F.png"),
+      Flame.images.load("images/Enemy/Small.png"),
     ]);
 
     playerComponent = BlueDropComponent(
@@ -54,22 +58,51 @@ class ShapeDefenceGame extends FlameGame
       radius: 80.0,
       position: Vector2(size.x / 2, size.y / 2),
     );
-    final enemy =
-        EnemyComponent(center: Vector2(size.x / 2, size.y / 2), speed: 100.0);
 
     add(playerComponent);
-    add(enemy);
 
     bullerTimer = Stream.periodic(const Duration(milliseconds: 500), (timer) {
       playerComponent.shoot();
     });
     enemyTimer = Stream.periodic(const Duration(milliseconds: 2500), (timer) {
-      final enemy =
-          EnemyComponent(center: Vector2(size.x / 2, size.y / 2), speed: 100.0);
-      add(enemy);
+      addEnemy();
     });
     enemyTimeSub = bullerTimer.listen((event) {});
     bulletTimeSub = enemyTimer.listen((event) {});
+  }
+
+  // Function to get a random position on the edge of the screen
+  Vector2 _getRandomEdgePosition() {
+    final int edge = random.nextInt(4); // Randomly select one of four edges
+    final size = camera.viewport.virtualSize;
+    double x = 0;
+    double y = 0;
+
+    switch (edge) {
+      case 0: // Top edge
+        x = random.nextDouble() * size.r;
+        break;
+      case 1: // Right edge
+        x = size.r;
+        y = random.nextDouble() * size.g;
+        break;
+      case 2: // Bottom edge
+        x = random.nextDouble() * size.r;
+        y = size.g;
+        break;
+      case 3: // Left edge
+        y = random.nextDouble() * size.g;
+        break;
+    }
+
+    return Vector2(x, y);
+  }
+
+  addEnemy()
+  {
+    final enemy = EnemyComponent(speed: 100.0, player: playerComponent);
+    enemy.position = _getRandomEdgePosition();
+    add(enemy);
   }
 
   @override

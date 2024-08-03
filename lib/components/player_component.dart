@@ -15,9 +15,9 @@ class BlueDropComponent extends PositionComponent
     with HasGameRef<ShapeDefenceGame>, CollisionCallbacks {
   final double radius;
   MovingState state = MovingState.still;
-  int health = 100;
+  double health = 100;
   Shield? shield;
-  
+
   final void Function() onGameOver;
 
   late SpriteComponent invHealth;
@@ -103,22 +103,6 @@ class BlueDropComponent extends PositionComponent
         break;
     }
   }
-
-  @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    super.onCollisionStart(intersectionPoints, other);
-    if (other is EnemyComponent) {
-      other.removeFromParent();
-      health -= 10;
-      if (health == 0) {
-        onGameOver();
-      }
-    }
-  }
-
   
   Vector2 calculateTailCoordinates() {
     double tailOffset = radius * 0.5; // Adjust the offset based on sprite design
@@ -132,6 +116,13 @@ class BlueDropComponent extends PositionComponent
 
   void _rotate(double deltaAngle) {
     angle += deltaAngle;
+  }
+
+  void reduceHealth(double health) {
+    this.health = max(this.health - health, 0.0);
+    if (this.health == 0.0) {
+      onGameOver();
+    }
   }
 }
 
