@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/enemy_component.dart';
+import 'package:shape_defence/components/game_colors.dart';
 
 class BulletComponent extends PositionComponent with CollisionCallbacks {
   final double speed = 300;
@@ -24,7 +25,7 @@ class BulletComponent extends PositionComponent with CollisionCallbacks {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawCircle(Offset.zero, 10, Paint()..color = Colors.blue);
+    canvas.drawCircle(Offset.zero, 10, Paint()..color = GameColors.friend);
   }
 
   @override

@@ -3,11 +3,12 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/player_component.dart';
+import 'package:shape_defence/components/game_colors.dart';
 
 class EnemyComponent extends PositionComponent with CollisionCallbacks {
   final double speed;
   final Vector2 center;
-  final Paint paint = Paint()..color = Colors.green;
+  final Paint paint = Paint()..color = GameColors.enemy;
 
   EnemyComponent({
     required this.center,
