@@ -1,7 +1,9 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:shape_defence/components/enemy_component.dart';
 
-class BulletComponent extends PositionComponent {
+class BulletComponent extends PositionComponent with CollisionCallbacks {
   final double speed = 300;
   final Vector2 direction;
 
@@ -23,5 +25,23 @@ class BulletComponent extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
     canvas.drawCircle(Offset.zero, 10, Paint()..color = Colors.blue);
+  }
+
+  @override
+  Future<void> onLoad() async {
+    add(RectangleHitbox(anchor: Anchor.center));
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is EnemyComponent) {
+      print('ANKH bullet collision');
+      removeFromParent();
+      other.removeFromParent();
+    }
   }
 }

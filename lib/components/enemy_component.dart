@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:shape_defence/components/player_component.dart';
 
-class EnemyComponent extends PositionComponent {
+class EnemyComponent extends PositionComponent with CollisionCallbacks {
   final double speed;
   final Vector2 center;
   final Paint paint = Paint()..color = Colors.green;
@@ -32,9 +34,25 @@ class EnemyComponent extends PositionComponent {
   }
 
   @override
+  Future<void> onLoad() async {
+    add(RectangleHitbox(anchor: Anchor.center));
+  }
+
+  @override
   void render(Canvas canvas) {
     super.render(canvas);
     canvas.drawRect(size.toRect(), paint);
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+    if (other is BlueDropComponent) {
+      removeFromParent();
+    }
   }
 
   // Function to get a random position on the edge of the screen
