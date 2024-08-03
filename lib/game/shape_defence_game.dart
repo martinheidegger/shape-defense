@@ -2,8 +2,8 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shape_defence/components/background_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
+import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/player_component.dart';
 
 class ShapeDefenceGame extends FlameGame
@@ -11,6 +11,11 @@ class ShapeDefenceGame extends FlameGame
   late Stream bullerTimer;
   late Stream enemyTimer;
   late BlueDropComponent playerComponent;
+
+  @override
+  Color backgroundColor() {
+    return GameColors.background;
+  }
 
   @override
   void onLoad() {
@@ -21,7 +26,6 @@ class ShapeDefenceGame extends FlameGame
     final enemy =
         EnemyComponent(center: Vector2(size.x / 2, size.y / 2), speed: 100.0);
 
-    add(BackgroundComponent());
     add(playerComponent);
     add(enemy);
 
