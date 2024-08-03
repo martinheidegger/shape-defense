@@ -12,7 +12,7 @@ class EnemyComponent extends PositionComponent with CollisionCallbacks {
 
   EnemyComponent({
     required this.center,
-    this.speed = 0.1,
+    this.speed = 100.0,
   }) : super(
           size: Vector2(30, 20), // Width and height of the rectangle
           anchor: Anchor.center,
