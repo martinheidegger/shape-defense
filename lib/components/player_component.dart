@@ -4,7 +4,6 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/bullet_component.dart';
-import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/data/Shield.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
 
@@ -13,6 +12,7 @@ class BlueDropComponent extends PositionComponent
   final double radius;
   MovingState state = MovingState.still;
   double health = 100;
+  double speed = 2.0;
   Shield? shield = Shield(a: 0.0, b: 0.0, c: 1.0);
   
   final void Function() onGameOver;
@@ -83,10 +83,10 @@ class BlueDropComponent extends PositionComponent
 
     switch (state) {
       case MovingState.right:
-        _rotate(dt * 1.0);
+        _rotate(dt * speed);
         break;
       case MovingState.left:
-        _rotate(dt * -1.0);
+        _rotate(dt * -speed);
         break;
       case MovingState.still:
         // Do nothing

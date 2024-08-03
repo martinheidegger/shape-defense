@@ -12,6 +12,7 @@ import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/player_component.dart';
 import 'package:shape_defence/components/small_enemy_component.dart';
+import 'package:shape_defence/components/tip_enemy_component.dart';
 import 'package:shape_defence/scenarios/game_over_component.dart';
 
 class ShapeDefenceGame extends FlameGame
@@ -49,6 +50,7 @@ class ShapeDefenceGame extends FlameGame
       Flame.images.load("images/Shield/F.png"),
       Flame.images.load("images/Enemy/Small.png"),
       Flame.images.load("images/Enemy/Big.png"),
+      Flame.images.load("images/Enemy/Tip.png"),
     ]);
     scoreBoard = TextComponent(
       text: 'score: $score',
@@ -89,10 +91,10 @@ class ShapeDefenceGame extends FlameGame
 
     add(playerComponent);
 
-    bullerTimer = Stream.periodic(const Duration(milliseconds: 500), (timer) {
+    bullerTimer = Stream.periodic(const Duration(milliseconds: 200), (timer) {
       playerComponent.shoot();
     });
-    enemyTimer = Stream.periodic(const Duration(milliseconds: 2500), (timer) {
+    enemyTimer = Stream.periodic(const Duration(milliseconds: 2000), (timer) {
       addEnemy();
     });
     enemyTimeSub = bullerTimer.listen((event) {});
@@ -128,9 +130,9 @@ class ShapeDefenceGame extends FlameGame
 
   addEnemy()
   {
-    final type = random.nextInt(2);
-    EnemyComponent enemy = type == 0 ? SmallEnemyComponent(player: playerComponent) : BigEnemyComponent(player: playerComponent);
-    enemy.position = _getRandomEdgePosition();
+    final type = random.nextInt(3);
+    final position = _getRandomEdgePosition();
+    EnemyComponent enemy = type == 1 ? SmallEnemyComponent(player: playerComponent, position: position) : type == 2 ? BigEnemyComponent(player: playerComponent, position: position) : TipEnemyComponent(player: playerComponent, position: position);
     add(enemy);
   }
 

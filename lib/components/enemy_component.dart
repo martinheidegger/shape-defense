@@ -7,8 +7,8 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks 
   final BlueDropComponent player;
   final double health;
 
-  EnemyComponent({ this.speed = 100.0, this.health = 10, required this.player }) : super() {
-    debugMode = true;
+  EnemyComponent({ this.speed = 100.0, this.health = 10, required this.player, required Vector2 position }) : super() {
+    this.position = position;
   }
 
   @override
