@@ -29,7 +29,14 @@ class ShapeDefenceGame extends FlameGame
     Flame.images.prefix = "";
     await Future.wait([
       Flame.images.load("images/Hero/Full.png"),
-      Flame.images.load("images/Hero/InvHealth.png")
+      Flame.images.load("images/Hero/InvHealth.png"),
+      Flame.images.load("images/Shield/BG.png"),
+      Flame.images.load("images/Shield/A.png"),
+      Flame.images.load("images/Shield/B.png"),
+      Flame.images.load("images/Shield/C.png"),
+      Flame.images.load("images/Shield/D.png"),
+      Flame.images.load("images/Shield/E.png"),
+      Flame.images.load("images/Shield/F.png")
     ]);
 
     playerComponent = BlueDropComponent(
