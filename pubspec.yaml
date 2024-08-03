@@ -65,6 +65,7 @@ flutter:
     - assets/images/Shield/
     - assets/images/Hero/
     - assets/images/Enemy/
+    - assets/images/Enemy/Pentagon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

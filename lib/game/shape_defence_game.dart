@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:shape_defence/components/big_enemy_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
+import 'package:shape_defence/components/pentagon_component.dart';
 import 'package:shape_defence/components/player_component.dart';
 import 'package:shape_defence/components/small_enemy_component.dart';
 import 'package:shape_defence/components/tip_enemy_component.dart';
@@ -50,6 +51,11 @@ class ShapeDefenceGame extends FlameGame
       Flame.images.load("Enemy/Small.png"),
       Flame.images.load("Enemy/Big.png"),
       Flame.images.load("Enemy/Tip.png"),
+      Flame.images.load("Enemy/Pentagon/A.png"),
+      Flame.images.load("Enemy/Pentagon/B.png"),
+      Flame.images.load("Enemy/Pentagon/C.png"),
+      Flame.images.load("Enemy/Pentagon/D.png"),
+      Flame.images.load("Enemy/Pentagon/E.png"),
     ]);
     scoreBoard = TextComponent(
       text: 'score: $score',
@@ -129,9 +135,19 @@ class ShapeDefenceGame extends FlameGame
 
   addEnemy()
   {
-    final type = random.nextInt(3);
+    final type = random.nextInt(4);
     final position = _getRandomEdgePosition();
-    EnemyComponent enemy = type == 1 ? SmallEnemyComponent(player: playerComponent, position: position) : type == 2 ? BigEnemyComponent(player: playerComponent, position: position) : TipEnemyComponent(player: playerComponent, position: position);
+
+    EnemyComponent enemy;
+    if (type == 0) {
+      enemy = SmallEnemyComponent(player: playerComponent, position: position);
+    } else if (type == 1) {
+      enemy = BigEnemyComponent(player: playerComponent, position: position);
+    } else if (type == 2) {
+      enemy = TipEnemyComponent(player: playerComponent, position: position);
+    } else {
+      enemy = PentagonEnemyComponent(player: playerComponent, position: position);
+    }
     add(enemy);
   }
 

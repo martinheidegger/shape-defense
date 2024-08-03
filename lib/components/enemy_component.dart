@@ -19,12 +19,17 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks 
     ));
   }
 
+  isVulnerable() {
+    return true;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
     // Move the rectangle towards the center
     final distance = (player.position - position);
     if (distance.length < 1.0) {
+      removeFromParent();
       return;
     }
     final direction = distance.normalized();

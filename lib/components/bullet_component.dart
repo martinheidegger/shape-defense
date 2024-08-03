@@ -45,9 +45,11 @@ class BulletComponent extends PositionComponent with HasGameRef<ShapeDefenceGame
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is EnemyComponent) {
-      removeFromParent();
-      other.removeFromParent();
-      game.score++;
+      if (other.isVulnerable()) {
+        removeFromParent();
+        other.removeFromParent();
+        game.score++;
+      }
     }
   }
 }

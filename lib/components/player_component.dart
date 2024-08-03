@@ -41,11 +41,10 @@ class BlueDropComponent extends PositionComponent
           angle: angle ?? 0,
           size: Vector2(144, 144),
         ) {
-    add(RectangleHitbox(
+    add(CircleHitbox(
+        radius: 45,
         anchor: Anchor.center,
-        size: Vector2(80, 100),
         position: Vector2(size.x / 2, (size.y / 2) - 10)));
-    add(RectangleHitbox(anchor: Anchor.center, size: Vector2.all(72)));
     add(shieldBg = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/BG.png').clone())));
     add(shieldA = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/A.png').clone())));
     add(shieldB = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/B.png').clone())));
