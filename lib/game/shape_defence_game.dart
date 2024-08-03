@@ -18,7 +18,13 @@ class ShapeDefenceGame extends FlameGame
   }
 
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
+    Flame.images.prefix = "";
+    await Future.wait([
+      Flame.images.load("images/Hero/Full.png"),
+      Flame.images.load("images/Hero/InvHealth.png")
+    ]);
+
     playerComponent = BlueDropComponent(
       radius: 80.0,
       position: Vector2(size.x / 2, size.y / 2),

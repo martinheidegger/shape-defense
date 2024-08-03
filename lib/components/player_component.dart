@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
@@ -11,6 +12,14 @@ class BlueDropComponent extends PositionComponent
     with HasGameRef<ShapeDefenceGame>, CollisionCallbacks {
   final double radius;
   MovingState state = MovingState.still;
+  late Sprite full;
+  late Sprite invHealth;
+  int health = 0;
+
+  double healthDisplay() {
+    // Normalized value 0.0 = no health, 1.0 = full health
+    return health / 100.0;
+  }
 
   BlueDropComponent({
     required this.radius,
@@ -20,30 +29,29 @@ class BlueDropComponent extends PositionComponent
           position: position ?? Vector2.zero(),
           anchor: Anchor.center,
           angle: angle ?? 0,
-          size: Vector2(72, 72),
+          size: Vector2(144, 144),
         ) {
     add(RectangleHitbox(anchor: Anchor.center, size: Vector2.all(72)));
+    full = Sprite(Flame.images.fromCache('images/Hero/Full.png').clone());
+    invHealth = Sprite(Flame.images.fromCache('images/Hero/InvHealth.png').clone());
   }
 
   @override
   void render(Canvas canvas) {
-    final paint = Paint()..color = GameColors.friend;
-    final path = Path();
-    path.moveTo(36.0005916,6.30594831);
-    path.cubicTo(45.8728924, 20.3674323, 51, 30.2465808, 51,36);
-    path.cubicTo(51, 40.1421356, 49.3210678, 43.8921356, 46.6066017, 46.60660170);
-    path.cubicTo(43.8921356, 49.3210678, 40.1421356, 51, 36, 51);
-    path.cubicTo(31.8578644, 51, 28.1078644, 49.3210678, 25.3933983, 46.6066017);
-    path.cubicTo(22.6789322, 43.8921356, 21,40.1421356, 21, 36);
-    path.cubicTo(21, 30.2462109, 26.127767,20.3661617, 36.0005916,6.30594831);
-    path.close();
-
-    canvas.drawPath(path, paint);
+    full.render(canvas);
+    Color color = Color(GameColors.background.value).withAlpha(
+      max(min(0xff - (healthDisplay() * 0xff).round(), 0xff), 0x00)
+    );
+    final paint = Paint();
+    paint.color = color;
+    invHealth.paint = paint;
+    invHealth.render(canvas);
   }
 
   void shoot() {
+    const baseAngle = 90;
     final Vector2 bulletDirection =
-        Vector2(cos(angle + pi / 2), sin(angle + pi / 2));
+        Vector2(cos(angle + baseAngle + pi / 2), sin(angle + baseAngle + pi / 2));
 
     final Vector2 gunPosition = calculateTailCoordinates();
 
