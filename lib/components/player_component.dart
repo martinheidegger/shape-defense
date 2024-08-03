@@ -14,34 +14,41 @@ class BlueDropComponent extends PositionComponent
   MovingState state = MovingState.still;
   late Sprite full;
   late Sprite invHealth;
-  int health = 0;
+  int health = 100;
+  final void Function() onGameOver;
 
   double healthDisplay() {
     // Normalized value 0.0 = no health, 1.0 = full health
     return health / 100.0;
   }
 
-  BlueDropComponent({
+  @override
+  bool debugMode = true;
+
+  BlueDropComponent(
+    this.onGameOver, {
     required this.radius,
-    Vector2? position,
+    super.position,
     double? angle,
   }) : super(
-          position: position ?? Vector2.zero(),
           anchor: Anchor.center,
           angle: angle ?? 0,
           size: Vector2(144, 144),
         ) {
-    add(RectangleHitbox(anchor: Anchor.center, size: Vector2.all(72)));
+    add(RectangleHitbox(
+        anchor: Anchor.center,
+        size: Vector2(80, 100),
+        position: Vector2(size.x / 2, (size.y / 2) - 10)));
     full = Sprite(Flame.images.fromCache('images/Hero/Full.png').clone());
-    invHealth = Sprite(Flame.images.fromCache('images/Hero/InvHealth.png').clone());
+    invHealth =
+        Sprite(Flame.images.fromCache('images/Hero/InvHealth.png').clone());
   }
 
   @override
   void render(Canvas canvas) {
     full.render(canvas);
     Color color = Color(GameColors.background.value).withAlpha(
-      max(min(0xff - (healthDisplay() * 0xff).round(), 0xff), 0x00)
-    );
+        max(min(0xff - (healthDisplay() * 0xff).round(), 0xff), 0x00));
     final paint = Paint();
     paint.color = color;
     invHealth.paint = paint;
@@ -49,12 +56,13 @@ class BlueDropComponent extends PositionComponent
   }
 
   void shoot() {
-    const baseAngle = 90;
-    final Vector2 bulletDirection =
-        Vector2(cos(angle + baseAngle + pi / 2), sin(angle + baseAngle + pi / 2));
+    // Calculate the direction based on the current angle
+    final Vector2 bulletDirection = Vector2(cos(angle), sin(angle));
 
+    // Calculate the position to shoot from (tip of the tail)
     final Vector2 gunPosition = calculateTailCoordinates();
 
+    // Create and add the bullet to the game
     final bullet = BulletComponent(gunPosition, bulletDirection);
     gameRef.add(bullet);
   }
@@ -84,14 +92,20 @@ class BlueDropComponent extends PositionComponent
     super.onCollisionStart(intersectionPoints, other);
     if (other is EnemyComponent) {
       other.removeFromParent();
+      health -= 10;
+      if (health == 0) {
+        onGameOver();
+      }
     }
   }
 
+  
   Vector2 calculateTailCoordinates() {
-    double tailHeight = radius * 1.5;
+    double tailOffset = radius * 0.5; // Adjust the offset based on sprite design
 
-    double tailX = position.x + cos(angle + pi / 2) * tailHeight;
-    double tailY = position.y + sin(angle + pi / 2) * tailHeight;
+    // Calculate the tail's tip position based on the current angle
+    double tailX = position.x + cos(angle) * tailOffset;
+    double tailY = position.y + sin(angle) * tailOffset;
 
     return Vector2(tailX, tailY);
   }

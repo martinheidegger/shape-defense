@@ -5,7 +5,7 @@ import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
 
 class BulletComponent extends PositionComponent with CollisionCallbacks {
-  final double speed = 300;
+  final double speed = 1;
   final Vector2 direction;
 
   BulletComponent(Vector2 position, Vector2 direction)
@@ -40,9 +40,11 @@ class BulletComponent extends PositionComponent with CollisionCallbacks {
   ) {
     super.onCollisionStart(intersectionPoints, other);
     if (other is EnemyComponent) {
-      print('ANKH bullet collision');
       removeFromParent();
       other.removeFromParent();
     }
   }
+
+   @override
+  bool debugMode = true;
 }

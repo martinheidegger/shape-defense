@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +8,16 @@ import 'package:flutter/services.dart';
 import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/player_component.dart';
+import 'package:shape_defence/scenarios/game_over_component.dart';
 
 class ShapeDefenceGame extends FlameGame
     with KeyboardEvents, HasCollisionDetection {
   late Stream bullerTimer;
   late Stream enemyTimer;
   late BlueDropComponent playerComponent;
+
+  late StreamSubscription bulletTimeSub;
+  late StreamSubscription enemyTimeSub;
 
   @override
   Color backgroundColor() {
@@ -26,6 +33,17 @@ class ShapeDefenceGame extends FlameGame
     ]);
 
     playerComponent = BlueDropComponent(
+      () {
+        enemyTimeSub.cancel();
+        bulletTimeSub.cancel();
+        removeAll(children);
+        add(GameOverComponent(
+            position: Vector2(size.x / 2, size.y / 2),
+            onExit: () {
+              SystemNavigator.pop();
+            },
+            onRetry: () {}));
+      },
       radius: 80.0,
       position: Vector2(size.x / 2, size.y / 2),
     );
@@ -38,13 +56,13 @@ class ShapeDefenceGame extends FlameGame
     bullerTimer = Stream.periodic(const Duration(milliseconds: 500), (timer) {
       playerComponent.shoot();
     });
-    enemyTimer = Stream.periodic(const Duration(milliseconds: 500), (timer) {
+    enemyTimer = Stream.periodic(const Duration(milliseconds: 2500), (timer) {
       final enemy =
           EnemyComponent(center: Vector2(size.x / 2, size.y / 2), speed: 100.0);
       add(enemy);
     });
-    bullerTimer.listen((event) {});
-    enemyTimer.listen((event) {});
+    enemyTimeSub = bullerTimer.listen((event) {});
+    bulletTimeSub = enemyTimer.listen((event) {});
   }
 
   @override

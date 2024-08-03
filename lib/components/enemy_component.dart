@@ -12,7 +12,7 @@ class EnemyComponent extends PositionComponent with CollisionCallbacks {
 
   EnemyComponent({
     required this.center,
-    this.speed = 100.0,
+    this.speed = 0.1,
   }) : super(
           size: Vector2(30, 20), // Width and height of the rectangle
           anchor: Anchor.center,
@@ -33,6 +33,8 @@ class EnemyComponent extends PositionComponent with CollisionCallbacks {
       position = center.clone();
     }
   }
+   @override
+  bool debugMode = true;
 
   @override
   Future<void> onLoad() async {
