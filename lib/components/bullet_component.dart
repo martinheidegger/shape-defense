@@ -3,8 +3,9 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/enemy_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
+import 'package:shape_defence/game/shape_defence_game.dart';
 
-class BulletComponent extends PositionComponent with CollisionCallbacks {
+class BulletComponent extends PositionComponent with HasGameRef<ShapeDefenceGame>, CollisionCallbacks {
   final double speed = 300;
   final Vector2 direction;
 
@@ -20,6 +21,10 @@ class BulletComponent extends PositionComponent with CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
     position += direction * speed * dt;
+
+    if (position.x > game.size.x || position.y > game.size.y) {
+      removeFromParent();
+    }
   }
 
   @override
@@ -42,9 +47,7 @@ class BulletComponent extends PositionComponent with CollisionCallbacks {
     if (other is EnemyComponent) {
       removeFromParent();
       other.removeFromParent();
+      game.score++;
     }
   }
-
-   @override
-  bool debugMode = true;
 }

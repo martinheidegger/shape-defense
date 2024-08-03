@@ -1,14 +1,11 @@
 import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
-import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/data/Shield.dart';
-import 'package:shape_defence/data/normalUint8.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
 
 class BlueDropComponent extends PositionComponent
@@ -16,8 +13,8 @@ class BlueDropComponent extends PositionComponent
   final double radius;
   MovingState state = MovingState.still;
   double health = 100;
-  Shield? shield;
-
+  Shield? shield = Shield(a: 0.0, b: 0.0, c: 1.0);
+  
   final void Function() onGameOver;
 
   late SpriteComponent invHealth;
@@ -31,11 +28,8 @@ class BlueDropComponent extends PositionComponent
 
   double healthDisplay() {
     // Normalized value 0.0 = no health, 1.0 = full health
-    return health / 100.0;
+    return 1.0 -health / 100.0;
   }
-
-  @override
-  bool debugMode = true;
 
   BlueDropComponent(
     this.onGameOver, {
@@ -76,13 +70,9 @@ class BlueDropComponent extends PositionComponent
   }
 
   void shoot() {
-    // Calculate the direction based on the current angle
-    final Vector2 bulletDirection = Vector2(cos(angle), sin(angle));
-
-    // Calculate the position to shoot from (tip of the tail)
+    final Vector2 bulletDirection = Vector2(cos(angle - pi / 2), sin(angle - pi / 2));
     final Vector2 gunPosition = calculateTailCoordinates();
 
-    // Create and add the bullet to the game
     final bullet = BulletComponent(gunPosition, bulletDirection);
     gameRef.add(bullet);
   }
@@ -105,14 +95,15 @@ class BlueDropComponent extends PositionComponent
   }
   
   Vector2 calculateTailCoordinates() {
-    double tailOffset = radius * 0.5; // Adjust the offset based on sprite design
+  // Calculate the offset based on the size of the component
+  double tailOffset = size.y / 2; // This ensures the bullet originates from the top edge
 
-    // Calculate the tail's tip position based on the current angle
-    double tailX = position.x + cos(angle) * tailOffset;
-    double tailY = position.y + sin(angle) * tailOffset;
+  // Calculate the tail's tip position based on the current angle
+  double tailX = position.x + cos(angle - pi / 2) * tailOffset;
+  double tailY = position.y + sin(angle - pi / 2) * tailOffset;
 
-    return Vector2(tailX, tailY);
-  }
+  return Vector2(tailX, tailY);
+}
 
   void _rotate(double deltaAngle) {
     angle += deltaAngle;

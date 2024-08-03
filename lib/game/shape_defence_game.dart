@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -20,6 +21,10 @@ class ShapeDefenceGame extends FlameGame
   late StreamSubscription bulletTimeSub;
   late StreamSubscription enemyTimeSub;
   late Random random;
+  late TextComponent scoreBoard;
+  late TextComponent cheeringBoard;
+
+  int score = 0;
 
   @override
   Color backgroundColor() {
@@ -42,7 +47,27 @@ class ShapeDefenceGame extends FlameGame
       Flame.images.load("images/Shield/F.png"),
       Flame.images.load("images/Enemy/Small.png"),
     ]);
-
+    scoreBoard = TextComponent(
+      text: 'score: $score',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 50.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+    cheeringBoard = TextComponent(
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 50.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.orange,
+        ),
+      ),
+    );
+    add(scoreBoard);
+    add(cheeringBoard);
     playerComponent = BlueDropComponent(
       () {
         enemyTimeSub.cancel();
@@ -103,6 +128,92 @@ class ShapeDefenceGame extends FlameGame
     final enemy = EnemyComponent(speed: 100.0, player: playerComponent);
     enemy.position = _getRandomEdgePosition();
     add(enemy);
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    remove(scoreBoard);
+
+    scoreBoard = TextComponent(
+      text: 'score: $score',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 50.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+    if (playerComponent.health < 20 && playerComponent.health != 0) {
+      cheeringBoard = TextComponent(
+        text: 'NEVER GIVE UP!!!!',
+        position: Vector2(size.x / 2, 0),
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 50.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
+          ),
+        ),
+      );
+      add(cheeringBoard);
+    } else if (playerComponent.health == 0) {
+      remove(cheeringBoard);
+      cheeringBoard = TextComponent(
+        text: 'YOU ARE AWESOME OIDA',
+        position: Vector2(size.x / 2, 0),
+        textRenderer: TextPaint(
+          style: const TextStyle(
+            fontSize: 50.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
+          ),
+        ),
+      ); 
+      add(cheeringBoard);
+    } else {
+      if (score == 10) {
+        remove(cheeringBoard);
+        cheeringBoard = TextComponent(
+          text: 'COMMMMMMBBOOOOOO',
+          position: Vector2(size.x / 2, 0),
+          textRenderer: TextPaint(
+            style: const TextStyle(
+              fontSize: 50.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.orange,
+            ),
+          ),
+        );
+      } else if(score == 15) {
+        cheeringBoard = TextComponent(
+          text: 'RAMPAGE!!!!!',
+          position: Vector2(size.x / 2, 0),
+          textRenderer: TextPaint(
+            style: const TextStyle(
+              fontSize: 50.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.cyan,
+            ),
+          ),
+        );
+      } else if(score == 20) {
+        cheeringBoard = TextComponent(
+          text: 'HUMILIATION!!!!!',
+          position: Vector2(size.x / 2, 0),
+          textRenderer: TextPaint(
+            style: const TextStyle(
+              fontSize: 50.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.cyan,
+            ),
+          ),
+        );
+        add(scoreBoard);
+      }
+    }
+    add(scoreBoard);
   }
 
   @override

@@ -15,6 +15,14 @@ class EnemyComponent extends SpriteComponent with CollisionCallbacks {
   }
 
   @override
+  Future<void> onLoad() async {
+    add(RectangleHitbox(
+      size: size,
+      anchor: anchor, // Ensure anchor matches the component's anchor
+    ));
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
     // Move the rectangle towards the center

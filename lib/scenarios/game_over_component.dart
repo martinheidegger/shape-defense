@@ -114,9 +114,7 @@ class ButtonComponent extends PositionComponent with TapCallbacks {
 
   @override
   void onTapUp(TapUpEvent event) {
-    // Check if the tap is within the button's bounds
     if (containsPoint(event.localPosition)) {
-      print('Button "$text" tapped');
       onPressed();
     }
   }
