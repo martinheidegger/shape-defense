@@ -9,7 +9,7 @@ import 'package:shape_defence/components/player_component.dart';
 class BigEnemyComponent extends EnemyComponent {
   BigEnemyComponent({ required BlueDropComponent player, required Vector2 position }): 
     super(player: player, speed: 120, health: 4, position: position) { 
-    final sprite = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Enemy/Big.png').clone()), anchor: Anchor.topLeft);
+    final sprite = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Enemy/Big.png').clone()), anchor: Anchor.topLeft);
     add(sprite);
     add(RectangleHitbox(size: sprite.size, anchor: Anchor.topLeft));
   }

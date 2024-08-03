@@ -13,7 +13,7 @@ class BlueDropComponent extends PositionComponent
   MovingState state = MovingState.still;
   double health = 100;
   double speed = 2.0;
-  Shield? shield = Shield(a: 0.0, b: 0.0, c: 1.0);
+  Shield? shield = null;//Shield(a: 0.0, b: 0.0, c: 1.0);
   
   final void Function() onGameOver;
 
@@ -46,15 +46,15 @@ class BlueDropComponent extends PositionComponent
         size: Vector2(80, 100),
         position: Vector2(size.x / 2, (size.y / 2) - 10)));
     add(RectangleHitbox(anchor: Anchor.center, size: Vector2.all(72)));
-    add(shieldBg = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/BG.png').clone())));
-    add(shieldA = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/A.png').clone())));
-    add(shieldB = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/B.png').clone())));
-    add(shieldC = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/C.png').clone())));
-    add(shieldD = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/D.png').clone())));
-    add(shieldE = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/E.png').clone())));
-    add(shieldF = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Shield/F.png').clone())));
-    add(SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Hero/Full.png').clone())));
-    add(invHealth = SpriteComponent(sprite: Sprite(Flame.images.fromCache('images/Hero/InvHealth.png').clone())));
+    add(shieldBg = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/BG.png').clone())));
+    add(shieldA = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/A.png').clone())));
+    add(shieldB = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/B.png').clone())));
+    add(shieldC = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/C.png').clone())));
+    add(shieldD = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/D.png').clone())));
+    add(shieldE = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/E.png').clone())));
+    add(shieldF = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/F.png').clone())));
+    add(SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/Full.png').clone())));
+    add(invHealth = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/InvHealth.png').clone())));
   }
 
   @override
