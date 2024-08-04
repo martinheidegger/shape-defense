@@ -38,25 +38,7 @@ class ShapeDefenceGame extends FlameGame
   @override
   Future<void> onLoad() async {
     random = Random(0);
-    await Future.wait([
-      Flame.images.load("Hero/Full.png"),
-      Flame.images.load("Hero/InvHealth.png"),
-      Flame.images.load("Shield/BG.png"),
-      Flame.images.load("Shield/A.png"),
-      Flame.images.load("Shield/B.png"),
-      Flame.images.load("Shield/C.png"),
-      Flame.images.load("Shield/D.png"),
-      Flame.images.load("Shield/E.png"),
-      Flame.images.load("Shield/F.png"),
-      Flame.images.load("Enemy/Small.png"),
-      Flame.images.load("Enemy/Big.png"),
-      Flame.images.load("Enemy/Tip.png"),
-      Flame.images.load("Enemy/Pentagon/A.png"),
-      Flame.images.load("Enemy/Pentagon/B.png"),
-      Flame.images.load("Enemy/Pentagon/C.png"),
-      Flame.images.load("Enemy/Pentagon/D.png"),
-      Flame.images.load("Enemy/Pentagon/E.png"),
-    ]);
+    await Flame.images.loadAllImages();
     scoreBoard = TextComponent(
       text: 'score: $score',
       textRenderer: TextPaint(
