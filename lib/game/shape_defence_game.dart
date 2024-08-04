@@ -96,18 +96,14 @@ class ShapeDefenceGame extends FlameGame
     double y = 0;
 
     switch (edge) {
-      case 0: // Top edge
+      case 2: // Bottom edge
+        y = size.g;
+      case 0: // Horizontal edge
         x = random.nextDouble() * size.r;
         break;
       case 1: // Right edge
         x = size.r;
-        y = random.nextDouble() * size.g;
-        break;
-      case 2: // Bottom edge
-        x = random.nextDouble() * size.r;
-        y = size.g;
-        break;
-      case 3: // Left edge
+      case 3: // Vertical edge
         y = random.nextDouble() * size.g;
         break;
     }
