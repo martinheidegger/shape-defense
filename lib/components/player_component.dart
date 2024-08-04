@@ -3,7 +3,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/data/Shield.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
 
@@ -66,14 +65,6 @@ class BlueDropComponent extends PositionComponent
     shieldD.setOpacity(shield?.d ?? 0.0);
     shieldE.setOpacity(shield?.e ?? 0.0);
     shieldF.setOpacity(shield?.f ?? 0.0);
-  }
-
-  void shoot() {
-    final Vector2 bulletDirection = Vector2(cos(angle - pi / 2), sin(angle - pi / 2));
-    final Vector2 gunPosition = calculateTailCoordinates();
-
-    final bullet = BulletComponent(gunPosition, bulletDirection);
-    gameRef.add(bullet);
   }
 
   @override

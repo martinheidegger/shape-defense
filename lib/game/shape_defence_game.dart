@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shape_defence/components/big_enemy_component.dart';
-import 'package:shape_defence/components/enemy_component.dart';
+import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/pentagon_component.dart';
 import 'package:shape_defence/components/player_component.dart';
@@ -18,12 +19,8 @@ import 'package:shape_defence/scenarios/game_over_component.dart';
 
 class ShapeDefenceGame extends FlameGame
     with KeyboardEvents, HasCollisionDetection {
-  late Stream bullerTimer;
-  late Stream enemyTimer;
   late BlueDropComponent playerComponent;
 
-  late StreamSubscription bulletTimeSub;
-  late StreamSubscription enemyTimeSub;
   late Random random;
   late TextComponent scoreBoard;
   late TextComponent cheeringBoard;
@@ -62,8 +59,6 @@ class ShapeDefenceGame extends FlameGame
     add(cheeringBoard);
     playerComponent = BlueDropComponent(
       () {
-        enemyTimeSub.cancel();
-        bulletTimeSub.cancel();
         removeAll(children);
         add(GameOverComponent(
             position: Vector2(size.x / 2, size.y / 2),
@@ -77,15 +72,21 @@ class ShapeDefenceGame extends FlameGame
     );
 
     add(playerComponent);
+    add(SpawnComponent(
+      period: .15,
+      selfPositioning: true,
+      factory: (i) {
+        final Vector2 position = playerComponent.calculateTailCoordinates();
+        final Vector2 direction = position - playerComponent.position;
 
-    bullerTimer = Stream.periodic(const Duration(milliseconds: 200), (timer) {
-      playerComponent.shoot();
-    });
-    enemyTimer = Stream.periodic(const Duration(milliseconds: 2000), (timer) {
-      addEnemy();
-    });
-    enemyTimeSub = bullerTimer.listen((event) {});
-    bulletTimeSub = enemyTimer.listen((event) {});
+        return BulletComponent(position, direction);
+      }
+    ));
+    add(SpawnComponent(
+      period: 1.7,
+      selfPositioning: true,
+      factory: (i) => addEnemy()
+    ));
   }
 
   // Function to get a random position on the edge of the screen
