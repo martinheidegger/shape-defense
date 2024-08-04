@@ -51,33 +51,40 @@ class PentagonEnemyComponent extends EnemyComponent {
     add(e);
     debugMode = false;
     final center = Vector2(48, 49);
-    final points = [
+    final outer = [
         Vector2(48, 0),
         Vector2(93.66, 33.86),
         Vector2(76.22, 88.64),
         Vector2(19.78, 88.64),
         Vector2(2.34,  33.86),
     ];
+    final inner = [
+        Vector2(48, 12.44),
+        Vector2(81.96, 37.64),
+        Vector2(68.9, 78.64),
+        Vector2(27.1, 78.64),
+        Vector2(7.02, 37.64)
+    ];
     final p = Paint();
     p.color = GameColors.goodie;
     add(hitA = PolygonHitbox(
-      [points[0].clone(), points[1].clone(), center.clone()],
+      [outer[0].clone(), outer[1].clone(), inner[1].clone(), inner[0].clone()],
       position: Vector2(0, -center.g),
     ));
     add(hitB = PolygonHitbox(
-      [points[1].clone(), points[2].clone(), center.clone()],
+      [outer[1].clone(), outer[2].clone(), inner[2].clone(), inner[1].clone()],
       position: Vector2(0, -14.78),
     ));
     add(hitC = PolygonHitbox(
-      [points[2].clone(), points[3].clone(), center.clone()],
+      [outer[2].clone(), outer[3].clone(), inner[3].clone(), inner[2].clone()],
       position: Vector2(-57.44/2, -0)
     ));
     add(hitD = PolygonHitbox(
-      [points[3].clone(), points[4].clone(), center.clone()],
+      [outer[3].clone(), outer[4].clone(), inner[4].clone(), inner[3].clone()],
       position: Vector2(-98/2, -16.96),
     ));
     add(hitE = PolygonHitbox(
-      [points[0].clone(), center.clone(), points[4].clone()],
+      [outer[0].clone(), inner[0].clone(), inner[4].clone(), outer[4].clone()],
       position: -center.clone()
     ));
   }
