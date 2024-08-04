@@ -117,20 +117,17 @@ class ShapeDefenceGame extends FlameGame
 
   addEnemy()
   {
-    final type = random.nextInt(4);
     final position = _getRandomEdgePosition();
-
-    EnemyComponent enemy;
-    if (type == 0) {
-      enemy = SmallEnemyComponent(player: playerComponent, position: position);
-    } else if (type == 1) {
-      enemy = BigEnemyComponent(player: playerComponent, position: position);
-    } else if (type == 2) {
-      enemy = TipEnemyComponent(player: playerComponent, position: position);
-    } else {
-      enemy = PentagonEnemyComponent(player: playerComponent, position: position);
+    switch (random.nextInt(4)) {
+      case 0:
+        return SmallEnemyComponent(player: playerComponent, position: position);
+      case 1:
+        return BigEnemyComponent(player: playerComponent, position: position);
+      case 2:
+        return TipEnemyComponent(player: playerComponent, position: position);
+      default:
+        return PentagonEnemyComponent(player: playerComponent, position: position);
     }
-    add(enemy);
   }
 
   @override
