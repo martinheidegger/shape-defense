@@ -131,13 +131,19 @@ class ShapeDefenceGame extends FlameGame
     }
   }
 
+  replaceCheeringboard(TextComponent newBoard) {
+    remove(cheeringBoard);
+    cheeringBoard = newBoard;
+    add(cheeringBoard);
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
     scoreBoard.text = 'score: $score';
   
     if (playerComponent.health < 20 && playerComponent.health != 0) {
-      cheeringBoard = TextComponent(
+      replaceCheeringboard(TextComponent(
         text: 'NEVER GIVE UP!!!!',
         position: Vector2(size.x / 2, 0),
         textRenderer: TextPaint(
@@ -147,11 +153,9 @@ class ShapeDefenceGame extends FlameGame
             color: Colors.red,
           ),
         ),
-      );
-      add(cheeringBoard);
+      ));
     } else if (playerComponent.health == 0) {
-      remove(cheeringBoard);
-      cheeringBoard = TextComponent(
+      replaceCheeringboard(TextComponent(
         text: 'YOU ARE AWESOME OIDA',
         position: Vector2(size.x / 2, 0),
         textRenderer: TextPaint(
@@ -161,12 +165,10 @@ class ShapeDefenceGame extends FlameGame
             color: Colors.red,
           ),
         ),
-      ); 
-      add(cheeringBoard);
+      ));
     } else {
       if (score == 10) {
-        remove(cheeringBoard);
-        cheeringBoard = TextComponent(
+        replaceCheeringboard(TextComponent(
           text: 'COMMMMMMBBOOOOOO',
           position: Vector2(size.x / 2, 0),
           textRenderer: TextPaint(
@@ -176,11 +178,9 @@ class ShapeDefenceGame extends FlameGame
               color: Colors.orange,
             ),
           ),
-        );
-        add(cheeringBoard);
+        ));
       } else if(score == 15) {
-        remove(cheeringBoard);
-        cheeringBoard = TextComponent(
+        replaceCheeringboard(TextComponent(
           text: 'RAMPAGE!!!!!',
           position: Vector2(size.x / 2, 0),
           textRenderer: TextPaint(
@@ -190,11 +190,9 @@ class ShapeDefenceGame extends FlameGame
               color: Colors.cyan,
             ),
           ),
-        );
-        add(cheeringBoard);
+        ));
       } else if(score == 20) {
-        remove(cheeringBoard);
-        cheeringBoard = TextComponent(
+        replaceCheeringboard(TextComponent(
           text: 'HUMILIATION!!!!!',
           position: Vector2(size.x / 2, 0),
           textRenderer: TextPaint(
@@ -204,8 +202,7 @@ class ShapeDefenceGame extends FlameGame
               color: Colors.cyan,
             ),
           ),
-        );
-        add(cheeringBoard);
+        ));
       }
     }
   }
