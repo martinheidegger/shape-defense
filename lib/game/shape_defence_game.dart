@@ -24,6 +24,7 @@ class ShapeDefenceGame extends FlameGame
   late Random random;
   late TextComponent scoreBoard;
   late TextComponent cheeringBoard;
+  late LogicalKeyboardKey lastKeyDown;
 
   int score = 0;
 
@@ -215,12 +216,16 @@ class ShapeDefenceGame extends FlameGame
     if (event is KeyDownEvent) {
       switch (event.logicalKey) {
         case LogicalKeyboardKey.arrowLeft:
-          playerComponent.state = MovingState.left; // Rotate left
+          playerComponent.state = MovingState.left;
           break;
         case LogicalKeyboardKey.arrowRight:
-          playerComponent.state = MovingState.right; // Rotate right
+          playerComponent.state = MovingState.right;
           break;
       }
+      lastKeyDown = event.logicalKey;
+    }
+    if (event is KeyUpEvent && event.logicalKey == lastKeyDown) {
+      playerComponent.state = MovingState.still;
     }
     return KeyEventResult.handled;
   }

@@ -11,8 +11,10 @@ class BlueDropComponent extends PositionComponent
   final double radius;
   MovingState state = MovingState.still;
   double health = 100;
-  double speed = 2.0;
-  Shield? shield = null;//Shield(a: 0.0, b: 0.0, c: 1.0);
+  double speed = 0.0;
+  double maxAcceleration = 3.0;
+  double maxSpeed = 3.0;
+  Shield? shield = Shield(a: 0.0, b: 0.0, c: 1.0);
   
   final void Function() onGameOver;
 
@@ -70,18 +72,20 @@ class BlueDropComponent extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-
+    double targetSpeed;
     switch (state) {
       case MovingState.right:
-        _rotate(dt * speed);
+        targetSpeed = maxSpeed;
         break;
       case MovingState.left:
-        _rotate(dt * -speed);
+        targetSpeed = -maxSpeed;
         break;
       case MovingState.still:
-        // Do nothing
+        targetSpeed = 0;
         break;
     }
+    speed += (targetSpeed - speed) * dt * maxAcceleration;
+    _rotate(dt * speed);
   }
   
   Vector2 calculateTailCoordinates() {
