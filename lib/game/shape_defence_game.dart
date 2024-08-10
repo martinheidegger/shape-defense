@@ -134,18 +134,8 @@ class ShapeDefenceGame extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    remove(scoreBoard);
-
-    scoreBoard = TextComponent(
-      text: 'score: $score',
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          fontSize: 50.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      ),
-    );
+    scoreBoard.text = 'score: $score';
+  
     if (playerComponent.health < 20 && playerComponent.health != 0) {
       cheeringBoard = TextComponent(
         text: 'NEVER GIVE UP!!!!',
@@ -218,7 +208,6 @@ class ShapeDefenceGame extends FlameGame
         add(cheeringBoard);
       }
     }
-    add(scoreBoard);
   }
 
   @override
