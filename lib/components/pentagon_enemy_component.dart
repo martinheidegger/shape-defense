@@ -1,13 +1,11 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flutter/material.dart';
 import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/enemy_component.dart';
-import 'package:shape_defence/components/game_colors.dart';
-import 'package:shape_defence/components/player_component.dart';
 
 class PentagonEnemyComponent extends EnemyComponent {
   late SpriteComponent a;
@@ -49,7 +47,10 @@ class PentagonEnemyComponent extends EnemyComponent {
     add(c);
     add(d);
     add(e);
-    debugMode = false;
+  }
+
+  @override
+  Future<void> onLoad() async {
     final center = Vector2(48, 49);
     final outer = [
         Vector2(48, 0),
@@ -65,8 +66,6 @@ class PentagonEnemyComponent extends EnemyComponent {
         Vector2(27.1, 78.64),
         Vector2(7.02, 37.64)
     ];
-    final p = Paint();
-    p.color = GameColors.goodie;
     add(hitA = PolygonHitbox(
       [outer[0].clone(), outer[1].clone(), inner[1].clone(), inner[0].clone()],
       position: Vector2(0, -center.g),
@@ -101,8 +100,7 @@ class PentagonEnemyComponent extends EnemyComponent {
   }
 
   @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollisionStart(intersectionPoints, other);
+  void onHit(PositionComponent other) {
     if (other is BulletComponent) {
       if (hitA.isColliding && a.isMounted) {
         a.removeFromParent();
@@ -126,5 +124,6 @@ class PentagonEnemyComponent extends EnemyComponent {
     count += d.isMounted ? 1 : 0;
     count += e.isMounted ? 1 : 0;
     vulnerable = count < 2;
+    super.onHit(other);
   }
 }

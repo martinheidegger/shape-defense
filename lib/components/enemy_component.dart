@@ -43,6 +43,10 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks 
     PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
+    onHit(other);
+  }
+
+  void onHit(PositionComponent other) {
     if (other == player) {
       player.reduceHealth(health);
       removeFromParent();
