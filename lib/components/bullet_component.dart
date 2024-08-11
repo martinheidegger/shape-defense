@@ -37,19 +37,4 @@ class BulletComponent extends PositionComponent with HasGameRef<ShapeDefenceGame
   Future<void> onLoad() async {
     add(RectangleHitbox(anchor: Anchor.center));
   }
-
-  @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    super.onCollisionStart(intersectionPoints, other);
-    if (other is EnemyComponent) {
-      if (other.isVulnerable()) {
-        removeFromParent();
-        other.removeFromParent();
-        game.score++;
-      }
-    }
-  }
 }

@@ -3,7 +3,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:shape_defence/data/Shield.dart';
+import 'package:shape_defence/components/shield_component.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
 
 class BlueDropComponent extends PositionComponent
@@ -14,18 +14,11 @@ class BlueDropComponent extends PositionComponent
   double speed = 0.0;
   double maxAcceleration = 3.0;
   double maxSpeed = 3.0;
-  Shield? shield = Shield(a: 0.0, b: 0.0, c: 1.0);
   
   final void Function() onGameOver;
 
   late SpriteComponent invHealth;
-  late SpriteComponent shieldBg;
-  late SpriteComponent shieldA;
-  late SpriteComponent shieldB;
-  late SpriteComponent shieldC;
-  late SpriteComponent shieldD;
-  late SpriteComponent shieldE;
-  late SpriteComponent shieldF;
+  late ShieldComponent shield;
 
   double healthDisplay() {
     // Normalized value 0.0 = no health, 1.0 = full health
@@ -54,13 +47,7 @@ class BlueDropComponent extends PositionComponent
       Vector2(41, 60),
       Vector2(53, 33),
     ]));
-    add(shieldBg = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/BG.png').clone())));
-    add(shieldA = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/A.png').clone())));
-    add(shieldB = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/B.png').clone())));
-    add(shieldC = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/C.png').clone())));
-    add(shieldD = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/D.png').clone())));
-    add(shieldE = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/E.png').clone())));
-    add(shieldF = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/F.png').clone())));
+    add(shield = ShieldComponent());
     add(SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/Full.png').clone())));
     add(invHealth = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/InvHealth.png').clone())));
   }
@@ -68,13 +55,6 @@ class BlueDropComponent extends PositionComponent
   @override
   void render(Canvas canvas) {
     invHealth.setOpacity(healthDisplay());
-    shieldBg.setOpacity(shield != null ? 1.0 : 0.0);
-    shieldA.setOpacity(shield?.a ?? 0.0);
-    shieldB.setOpacity(shield?.b ?? 0.0);
-    shieldC.setOpacity(shield?.c ?? 0.0);
-    shieldD.setOpacity(shield?.d ?? 0.0);
-    shieldE.setOpacity(shield?.e ?? 0.0);
-    shieldF.setOpacity(shield?.f ?? 0.0);
   }
 
   @override

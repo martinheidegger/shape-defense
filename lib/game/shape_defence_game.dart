@@ -11,8 +11,10 @@ import 'package:flutter/services.dart';
 import 'package:shape_defence/components/big_enemy_component.dart';
 import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/game_colors.dart';
-import 'package:shape_defence/components/pentagon_component.dart';
+import 'package:shape_defence/components/pentagon_enemy_component.dart';
 import 'package:shape_defence/components/player_component.dart';
+import 'package:shape_defence/components/shield_component.dart';
+import 'package:shape_defence/data/Shield.dart';
 import 'package:shape_defence/components/small_enemy_component.dart';
 import 'package:shape_defence/components/tip_enemy_component.dart';
 import 'package:shape_defence/scenarios/game_over_component.dart';
@@ -27,6 +29,7 @@ class ShapeDefenceGame extends FlameGame
   late LogicalKeyboardKey lastKeyDown;
 
   int score = 0;
+  Shield? shield = Shield();
 
   @override
   Color backgroundColor() {
@@ -228,5 +231,13 @@ class ShapeDefenceGame extends FlameGame
       playerComponent.state = MovingState.still;
     }
     return KeyEventResult.handled;
+  }
+
+  onShieldHit(ShieldPartComponent shieldPart) {
+    if (shield == null) return;
+    shieldPart.onHit(shield!);
+    if (!shield?.isActive()) {
+      shield = null;
+    }
   }
 }

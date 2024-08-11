@@ -1,8 +1,11 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:shape_defence/components/bullet_component.dart';
 import 'package:shape_defence/components/player_component.dart';
+import 'package:shape_defence/components/shield_component.dart';
+import 'package:shape_defence/game/shape_defence_game.dart';
 
-abstract class EnemyComponent extends PositionComponent with CollisionCallbacks {
+abstract class EnemyComponent extends PositionComponent with CollisionCallbacks, HasGameRef<ShapeDefenceGame> {
   final double speed;
   final BlueDropComponent player;
   final double health;
@@ -47,9 +50,21 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks 
   }
 
   void onHit(PositionComponent other) {
+    if (other is ShieldPartComponent) {
+      game.onShieldHit(other);
+      removeFromParent();
+      return;
+    }
     if (other == player) {
       player.reduceHealth(health);
       removeFromParent();
+    }
+    if (other is BulletComponent) {
+      if (isVulnerable()) {
+        removeFromParent();
+        other.removeFromParent();
+        game.score++;
+      }
     }
   }
 }
