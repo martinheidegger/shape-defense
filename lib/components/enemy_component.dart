@@ -22,10 +22,6 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks,
     ));
   }
 
-  isVulnerable() {
-    return true;
-  }
-
   @override
   void update(double dt) {
     super.update(dt);
@@ -46,25 +42,16 @@ abstract class EnemyComponent extends PositionComponent with CollisionCallbacks,
     PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
-    onHit(other);
-  }
-
-  void onHit(PositionComponent other) {
     if (other is ShieldPartComponent) {
       game.onShieldHit(other);
       removeFromParent();
-      return;
-    }
-    if (other == player) {
+    } else if (other == player) {
       player.reduceHealth(health);
       removeFromParent();
-    }
-    if (other is BulletComponent) {
-      if (isVulnerable()) {
-        removeFromParent();
-        other.removeFromParent();
-        game.score++;
-      }
+    } else if (other is BulletComponent) {
+      removeFromParent();
+      other.removeFromParent();
+      game.score++;
     }
   }
 }
