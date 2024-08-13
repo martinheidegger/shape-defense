@@ -5,12 +5,18 @@ import 'package:shape_defence/components/player_component.dart';
 import 'package:shape_defence/components/shield_component.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
 
-abstract class EnemyComponent extends PositionComponent with CollisionCallbacks, HasGameRef<ShapeDefenceGame> {
+abstract class EnemyComponent extends PositionComponent
+    with CollisionCallbacks, HasGameRef<ShapeDefenceGame> {
   final double speed;
   final BlueDropComponent player;
   final double health;
 
-  EnemyComponent({ this.speed = 100.0, this.health = 10, required this.player, required Vector2 position }) : super() {
+  EnemyComponent(
+      {this.speed = 100.0,
+      this.health = 10,
+      required this.player,
+      required Vector2 position})
+      : super() {
     this.position = position;
   }
 

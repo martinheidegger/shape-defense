@@ -14,7 +14,7 @@ class BlueDropComponent extends PositionComponent
   double speed = 0.0;
   double maxAcceleration = 3.0;
   double maxSpeed = 3.0;
-  
+
   final void Function() onGameOver;
 
   late SpriteComponent invHealth;
@@ -22,7 +22,7 @@ class BlueDropComponent extends PositionComponent
 
   double healthDisplay() {
     // Normalized value 0.0 = no health, 1.0 = full health
-    return 1.0 -health / 100.0;
+    return 1.0 - health / 100.0;
   }
 
   BlueDropComponent(
@@ -36,10 +36,7 @@ class BlueDropComponent extends PositionComponent
           size: Vector2(144, 144),
         ) {
     add(CircleHitbox(
-      radius: 33,
-      anchor: Anchor.center,
-      position: Vector2(72, 72)
-    ));
+        radius: 33, anchor: Anchor.center, position: Vector2(72, 72)));
     add(PolygonHitbox([
       Vector2(72, 6),
       Vector2(91, 33),
@@ -48,8 +45,10 @@ class BlueDropComponent extends PositionComponent
       Vector2(53, 33),
     ]));
     add(shield = ShieldComponent());
-    add(SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/Full.png').clone())));
-    add(invHealth = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Hero/InvHealth.png').clone())));
+    add(SpriteComponent(
+        sprite: Sprite(Flame.images.fromCache('Hero/Full.png').clone())));
+    add(invHealth = SpriteComponent(
+        sprite: Sprite(Flame.images.fromCache('Hero/InvHealth.png').clone())));
   }
 
   @override
@@ -75,17 +74,18 @@ class BlueDropComponent extends PositionComponent
     speed += (targetSpeed - speed) * dt * maxAcceleration;
     _rotate(dt * speed);
   }
-  
+
   Vector2 calculateTailCoordinates() {
-  // Calculate the offset based on the size of the component
-  double tailOffset = size.y / 2; // This ensures the bullet originates from the top edge
+    // Calculate the offset based on the size of the component
+    double tailOffset =
+        size.y / 2; // This ensures the bullet originates from the top edge
 
-  // Calculate the tail's tip position based on the current angle
-  double tailX = position.x + cos(angle - pi / 2) * tailOffset;
-  double tailY = position.y + sin(angle - pi / 2) * tailOffset;
+    // Calculate the tail's tip position based on the current angle
+    double tailX = position.x + cos(angle - pi / 2) * tailOffset;
+    double tailY = position.y + sin(angle - pi / 2) * tailOffset;
 
-  return Vector2(tailX, tailY);
-}
+    return Vector2(tailX, tailY);
+  }
 
   void _rotate(double deltaAngle) {
     angle += deltaAngle;

@@ -1,15 +1,15 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flutter/material.dart';
 import 'package:shape_defence/game/shape_defence_game.dart';
+import 'package:shape_defence/data/shield.dart';
 
-import '../data/Shield.dart';
+List<Vector2> clone(List<Vector2> list) {
+  return list.map((e) => e.clone()).toList();
+}
 
-final clone = (List<Vector2> list) => list.map((e) => e.clone()).toList();
-
-class ShieldComponent extends PositionComponent with HasGameRef<ShapeDefenceGame> {
-
+class ShieldComponent extends PositionComponent
+    with HasGameRef<ShapeDefenceGame> {
   late ShieldPartComponent a;
   late ShieldPartComponent b;
   late ShieldPartComponent c;
@@ -26,13 +26,26 @@ class ShieldComponent extends PositionComponent with HasGameRef<ShapeDefenceGame
     final hexE = Vector2(12.86, 138);
     final hexF = Vector2(12.86, 39.5);
     final hexCenter = Vector2(72, 72);
-    bg = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Shield/BG.png').clone()));
-    a = ShieldPartComponent((shield) { shield.a = 0.0; }, image: 'Shield/A.png', hitArea: clone([hexCenter, hexA, hexB]));
-    b = ShieldPartComponent((shield) { shield.b = 0.0; }, image: 'Shield/B.png', hitArea: clone([hexCenter, hexB, hexC]));
-    c = ShieldPartComponent((shield) { shield.c = 0.0; }, image: 'Shield/C.png', hitArea: clone([hexCenter, hexC, hexD]));
-    d = ShieldPartComponent((shield) { shield.d = 0.0; }, image: 'Shield/D.png', hitArea: clone([hexCenter, hexD, hexE]));
-    e = ShieldPartComponent((shield) { shield.e = 0.0; }, image: 'Shield/E.png', hitArea: clone([hexCenter, hexE, hexF]));
-    f = ShieldPartComponent((shield) { shield.f = 0.0; }, image: 'Shield/F.png', hitArea: clone([hexCenter, hexF, hexA]));
+    bg = SpriteComponent(
+        sprite: Sprite(Flame.images.fromCache('Shield/BG.png').clone()));
+    a = ShieldPartComponent((shield) {
+      shield.a = 0.0;
+    }, image: 'Shield/A.png', hitArea: clone([hexCenter, hexA, hexB]));
+    b = ShieldPartComponent((shield) {
+      shield.b = 0.0;
+    }, image: 'Shield/B.png', hitArea: clone([hexCenter, hexB, hexC]));
+    c = ShieldPartComponent((shield) {
+      shield.c = 0.0;
+    }, image: 'Shield/C.png', hitArea: clone([hexCenter, hexC, hexD]));
+    d = ShieldPartComponent((shield) {
+      shield.d = 0.0;
+    }, image: 'Shield/D.png', hitArea: clone([hexCenter, hexD, hexE]));
+    e = ShieldPartComponent((shield) {
+      shield.e = 0.0;
+    }, image: 'Shield/E.png', hitArea: clone([hexCenter, hexE, hexF]));
+    f = ShieldPartComponent((shield) {
+      shield.f = 0.0;
+    }, image: 'Shield/F.png', hitArea: clone([hexCenter, hexF, hexA]));
   }
 
   @override
@@ -63,17 +76,17 @@ class ShieldComponent extends PositionComponent with HasGameRef<ShapeDefenceGame
 }
 
 class ShieldPartComponent extends SpriteComponent with CollisionCallbacks {
-
   late PolygonHitbox hit;
   final void Function(Shield shield) onHit;
 
-  ShieldPartComponent(this.onHit, {
+  ShieldPartComponent(
+    this.onHit, {
     required String image,
     required List<Vector2> hitArea,
   }) : super(
-    sprite: Sprite(Flame.images.fromCache(image).clone()),
-    anchor: const Anchor(0.0, 0.0),
-  ) {
+          sprite: Sprite(Flame.images.fromCache(image).clone()),
+          anchor: const Anchor(0.0, 0.0),
+        ) {
     add(hit = PolygonHitbox(
       hitArea,
       anchor: const Anchor(0.0, 0.0),

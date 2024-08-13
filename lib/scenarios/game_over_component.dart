@@ -38,7 +38,7 @@ class GameOverComponent extends PositionComponent with HasGameRef {
         ),
       ),
       anchor: Anchor.topCenter,
-      position: Vector2(size!.x / 2, 20), // Position near the top
+      position: Vector2(size.x / 2, 20), // Position near the top
     );
 
     add(textComponent);

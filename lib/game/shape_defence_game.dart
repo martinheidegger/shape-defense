@@ -14,7 +14,7 @@ import 'package:shape_defence/components/game_colors.dart';
 import 'package:shape_defence/components/pentagon_enemy_component.dart';
 import 'package:shape_defence/components/player_component.dart';
 import 'package:shape_defence/components/shield_component.dart';
-import 'package:shape_defence/data/Shield.dart';
+import 'package:shape_defence/data/shield.dart';
 import 'package:shape_defence/components/small_enemy_component.dart';
 import 'package:shape_defence/components/tip_enemy_component.dart';
 import 'package:shape_defence/scenarios/game_over_component.dart';
@@ -77,20 +77,16 @@ class ShapeDefenceGame extends FlameGame
 
     add(playerComponent);
     add(SpawnComponent(
-      period: .15,
-      selfPositioning: true,
-      factory: (i) {
-        final Vector2 position = playerComponent.calculateTailCoordinates();
-        final Vector2 direction = position - playerComponent.position;
+        period: .15,
+        selfPositioning: true,
+        factory: (i) {
+          final Vector2 position = playerComponent.calculateTailCoordinates();
+          final Vector2 direction = position - playerComponent.position;
 
-        return BulletComponent(position, direction);
-      }
-    ));
+          return BulletComponent(position, direction);
+        }));
     add(SpawnComponent(
-      period: 1.7,
-      selfPositioning: true,
-      factory: (i) => addEnemy()
-    ));
+        period: 1.7, selfPositioning: true, factory: (i) => addEnemy()));
   }
 
   // Function to get a random position on the edge of the screen
@@ -120,8 +116,7 @@ class ShapeDefenceGame extends FlameGame
     return Vector2(x, y);
   }
 
-  addEnemy()
-  {
+  addEnemy() {
     final position = _getRandomEdgePosition();
     switch (random.nextInt(4)) {
       case 0:
@@ -131,7 +126,8 @@ class ShapeDefenceGame extends FlameGame
       case 2:
         return TipEnemyComponent(player: playerComponent, position: position);
       default:
-        return PentagonEnemyComponent(player: playerComponent, position: position);
+        return PentagonEnemyComponent(
+            player: playerComponent, position: position);
     }
   }
 
@@ -145,7 +141,7 @@ class ShapeDefenceGame extends FlameGame
   void update(double dt) {
     super.update(dt);
     scoreBoard.text = 'score: $score';
-  
+
     if (playerComponent.health < 20 && playerComponent.health != 0) {
       replaceCheeringboard(TextComponent(
         text: 'NEVER GIVE UP!!!!',
@@ -183,7 +179,7 @@ class ShapeDefenceGame extends FlameGame
             ),
           ),
         ));
-      } else if(score == 15) {
+      } else if (score == 15) {
         replaceCheeringboard(TextComponent(
           text: 'RAMPAGE!!!!!',
           position: Vector2(size.x / 2, 0),
@@ -195,7 +191,7 @@ class ShapeDefenceGame extends FlameGame
             ),
           ),
         ));
-      } else if(score == 20) {
+      } else if (score == 20) {
         replaceCheeringboard(TextComponent(
           text: 'HUMILIATION!!!!!',
           position: Vector2(size.x / 2, 0),

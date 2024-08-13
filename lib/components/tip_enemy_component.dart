@@ -4,12 +4,17 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:shape_defence/components/enemy_component.dart';
-import 'package:shape_defence/components/player_component.dart';
 
 class TipEnemyComponent extends EnemyComponent {
-  TipEnemyComponent({ required BlueDropComponent player, required Vector2 position }): 
-    super(player: player, speed: 300, health: 5, position: position) {
-    final sprite = SpriteComponent(sprite: Sprite(Flame.images.fromCache('Enemy/Tip.png').clone()), anchor: Anchor.topCenter);
+  
+  TipEnemyComponent({required super.player, required super.position})
+      : super(speed: 300, health: 5);
+
+  @override
+  Future<void> onLoad() async {
+    final sprite = SpriteComponent(
+        sprite: Sprite(Flame.images.fromCache('Enemy/Tip.png').clone()),
+        anchor: Anchor.topCenter);
     add(sprite);
     add(RectangleHitbox(size: sprite.size, anchor: Anchor.topCenter));
   }
