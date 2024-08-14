@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:shape_defence/components/enemy_component.dart';
+import 'package:shape_defense/components/enemy_component.dart';
 
 class BigEnemyComponent extends EnemyComponent {
   BigEnemyComponent({required super.player, required super.position}):

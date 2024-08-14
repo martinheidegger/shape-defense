@@ -1,12 +1,12 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:shape_defence/components/bullet_component.dart';
-import 'package:shape_defence/components/player_component.dart';
-import 'package:shape_defence/components/shield_component.dart';
-import 'package:shape_defence/game/shape_defence_game.dart';
+import 'package:shape_defense/components/bullet_component.dart';
+import 'package:shape_defense/components/player_component.dart';
+import 'package:shape_defense/components/shield_component.dart';
+import 'package:shape_defense/game/shape_defense_game.dart';
 
 abstract class EnemyComponent extends PositionComponent
-    with CollisionCallbacks, HasGameRef<ShapeDefenceGame> {
+    with CollisionCallbacks, HasGameRef<ShapeDefenseGame> {
   final double speed;
   final BlueDropComponent player;
   final double health;
@@ -43,21 +43,24 @@ abstract class EnemyComponent extends PositionComponent
   }
 
   @override
-  void onCollisionStart(
+  void onCollision(
     Set<Vector2> intersectionPoints,
     PositionComponent other,
   ) {
-    super.onCollisionStart(intersectionPoints, other);
+    super.onCollision(intersectionPoints, other);
     if (other is ShieldPartComponent) {
-      game.onShieldHit(other);
+      game.state.onShieldHit(other);
       removeFromParent();
     } else if (other == player) {
-      player.reduceHealth(health);
+      game.state.onEnemyHit(health);
+      if (game.state.health == 0) {
+        game.onEnd();
+      }
       removeFromParent();
     } else if (other is BulletComponent) {
       removeFromParent();
       other.removeFromParent();
-      game.score++;
+      game.state.addScore(1);
     }
   }
 }

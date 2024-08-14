@@ -1,31 +1,16 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:shape_defence/components/game_colors.dart';
+import 'package:shape_defense/components/game_colors.dart';
+import 'package:shape_defense/game/shape_defense_game.dart';
 
-class GameOverComponent extends PositionComponent with HasGameRef {
-  final void Function() onExit;
-  final void Function() onRetry;
+class GameOverRoute extends PositionComponent with HasGameRef<ShapeDefenseGame> {
 
-  GameOverComponent({
-    required this.onExit,
-    required this.onRetry,
-    Vector2? position,
-    Vector2? size,
-  }) : super(
-          position: position ?? Vector2.zero(),
-          size: size ?? Vector2(500, 500), // Default size for the component
-          anchor: Anchor.center,
-        );
+  GameOverRoute();
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    final background = RectangleComponent(
-        size: size, paint: Paint()..color = GameColors.background);
-
-    add(background);
 
     // Game Over text
     final textComponent = TextComponent(
@@ -47,7 +32,7 @@ class GameOverComponent extends PositionComponent with HasGameRef {
     // Retry Button
     final retryButton = ButtonComponent(
       text: 'Retry',
-      onPressed: onRetry,
+      onPressed: () => game.onRestart(),
       size: Vector2(200, 80),
       color: GameColors.goodie,
       position: Vector2(size.x / 4, size.y - 80),

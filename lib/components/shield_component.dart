@@ -1,15 +1,15 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:shape_defence/game/shape_defence_game.dart';
-import 'package:shape_defence/data/shield.dart';
+import 'package:shape_defense/game/shape_defense_game.dart';
+import 'package:shape_defense/data/shield.dart';
 
 List<Vector2> clone(List<Vector2> list) {
   return list.map((e) => e.clone()).toList();
 }
 
 class ShieldComponent extends PositionComponent
-    with HasGameRef<ShapeDefenceGame> {
+    with HasGameRef<ShapeDefenseGame> {
   late ShieldPartComponent a;
   late ShieldPartComponent b;
   late ShieldPartComponent c;
@@ -51,7 +51,7 @@ class ShieldComponent extends PositionComponent
   @override
   void update(double dt) {
     super.update(dt);
-    final shield = game.shield;
+    final shield = game.state.shield;
     toggle(bg, shield != null ? 1.0 : 0.0);
     toggle(a, shield != null ? shield.a : 0.0);
     toggle(b, shield != null ? shield.b : 0.0);

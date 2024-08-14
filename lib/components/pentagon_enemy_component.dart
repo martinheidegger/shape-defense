@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:shape_defence/components/bullet_component.dart';
-import 'package:shape_defence/components/enemy_component.dart';
+import 'package:shape_defense/components/bullet_component.dart';
+import 'package:shape_defense/components/enemy_component.dart';
 
 class PentagonPartComponent extends SpriteComponent with CollisionCallbacks {
   PentagonPartComponent({
@@ -19,15 +19,15 @@ class PentagonPartComponent extends SpriteComponent with CollisionCallbacks {
   }
 
   @override
-  void onCollisionStart(
+  void onCollision(
       Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollisionStart(intersectionPoints, other);
+    super.onCollision(intersectionPoints, other);
     final theParent = parent;
     if (other is BulletComponent) {
       other.removeFromParent();
       removeFromParent();
     } else if (theParent is PentagonEnemyComponent) {
-      theParent.onCollisionStart(intersectionPoints, other);
+      theParent.onCollision(intersectionPoints, other);
     }
   }
 }
